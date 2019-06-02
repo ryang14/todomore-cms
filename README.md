@@ -1,20 +1,26 @@
-# sapper-template
+# To Do More personal CMS
 
-The default [Sapper](https://github.com/sveltejs/sapper) template, with branches for Rollup and webpack. To clone it and get started:
+I started this project to play with JavaScript development and because I wanted a super simple, lightweight web app to manage my todo lists, notes, and such.
+
+To run from github:
 
 ```bash
-# for Rollup
-npx degit sveltejs/sapper-template#rollup my-app
-# for webpack
-npx degit sveltejs/sapper-template#webpack my-app
-cd my-app
+git clone https://github.com/ryang14/todomore-cms.git
+cd todomore-cms
 npm install # or yarn!
 npm run dev
 ```
 
-Open up [localhost:3000](http://localhost:3000) and start clicking around.
+To run with docker:
 
-Consult [sapper.svelte.dev](https://sapper.svelte.dev) for help getting started.
+```bash
+docker pull ryang14/todomore
+docker run -p 3000 ryang14/todomore
+```
+
+Open up [localhost:3000](http://localhost:3000)
+
+Based on [sapper.svelte.dev](https://sapper.svelte.dev)
 
 
 ## Structure
@@ -85,4 +91,4 @@ npm install -D @sveltejs/svelte-virtual-list
 
 ## Bugs and feedback
 
-Sapper is in early development, and may have the odd rough edge here and there. Please be vocal over on the [Sapper issue tracker](https://github.com/sveltejs/sapper/issues).
+This is a learning project for personal use, so it may be buggy. Any and all feedback is welcome.
