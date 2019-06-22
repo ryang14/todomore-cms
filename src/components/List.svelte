@@ -1,9 +1,32 @@
+<script context="module">
+  export function preload({ params, query }) {
+    return this.fetch(`lists/items.json`)
+      .then(r => r.json())
+      .then(items => {
+        return { items };
+      });
+  }
+</script>
+
 <script>
-  import { createEventDispatcher } from "svelte";
+  import { createEventDispatcher, onMount } from "svelte";
+  import Item from "./Item.svelte";
 
   const dispatch = createEventDispatcher();
 
   export let list;
+  let items;
+
+  function refreshItems() {
+    fetch(`lists/items.json?listId=${list._id}`)
+      .then(r => r.json())
+      .then(itemsRes => {
+        items = itemsRes;
+      });
+  }
+  onMount(async () => {
+    refreshItems();
+  });
 
   function deleteList(id) {
     fetch("lists.json", {
@@ -12,7 +35,17 @@
       headers: {
         "Content-Type": "application/json"
       }
-    }).then(dispatch('list-deleted'));
+    }).then(dispatch("listChanged"));
+  }
+
+  function newItem(title) {
+    fetch("lists/items.json", {
+      method: "PUT",
+      body: JSON.stringify({ title: title, listId: list._id }),
+      headers: {
+        "Content-Type": "application/json"
+      }
+    }).then(refreshItems);
   }
 </script>
 
@@ -23,7 +56,7 @@
     position: relative;
   }
 
-  .new-task input {
+  .new-item {
     box-sizing: border-box;
     padding: 10px 0;
     background: transparent;
@@ -33,7 +66,7 @@
     font-size: 1em;
   }
 
-  .new-task input:focus {
+  .new-item:focus {
     outline: 0;
   }
 
@@ -47,31 +80,6 @@
     background: none;
     font-size: 1em;
     border: none;
-  }
-
-  ul {
-    margin: 0;
-    padding: 0;
-    background: white;
-  }
-
-  li {
-    position: relative;
-    list-style: none;
-    padding: 15px;
-    border-bottom: #eee solid 1px;
-  }
-
-  li .text {
-    margin-left: 10px;
-  }
-
-  li.checked {
-    color: #888;
-  }
-
-  li.checked .text {
-    text-decoration: line-through;
   }
 
   .hide-completed {
@@ -91,14 +99,29 @@
     <button class="delete-list" on:click={() => deleteList(list._id)}>×</button>
   </header>
 
-  <ul />
+  {#if items}
+    {#each items as item}
+      <Item {item} on:listChanged={refreshItems} />
+    {/each}
+  {/if}
 
   <label class="hide-completed">
     <input type="checkbox" />
     Hide Completed Tasks
   </label>
 
-  <form class="new-task">
-    <input type="text" name="text" placeholder="Type to add new tasks" />
-  </form>
+  <div>
+    <input
+      type="text"
+      name="title"
+      class="new-item"
+      on:keydown={e => {
+        if (e.which === 13) {
+          e.preventDefault();
+          newItem(e.target.value);
+          e.target.value = '';
+        }
+      }}
+      placeholder="Type to add new items" />
+  </div>
 </div>

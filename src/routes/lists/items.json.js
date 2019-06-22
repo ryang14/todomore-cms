@@ -2,12 +2,13 @@ import Datastore from "nedb";
 import path from "path";
 
 let db = new Datastore({
-  filename: path.join(__dirname, "data", "lists.db"),
+  filename: path.join(__dirname, "data", "items.db"),
   autoload: true
 });
 
 export function get(req, res) {
-  db.find({}, (err, docs) => {
+  console.log(req.query.listId)
+  db.find(req.query.listId != undefined ? {listId: req.query.listId} : {}, (err, docs) => {
     if (!err) {
       res.writeHead(200, {
         "Content-Type": "application/json"
@@ -35,7 +36,7 @@ export function post(req, res) {
 
 export function del(req, res) {
   if (req.body._id) {
-    db.remove(req.body);
+    db.remove({_id: req.body._id });
   }
 
   get(req, res);

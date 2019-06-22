@@ -14,7 +14,7 @@
 
   export let lists;
 
-  function refreshLists(title) {
+  function refreshLists() {
     fetch("lists.json")
       .then(r => r.json())
       .then(listsRes => {
@@ -54,5 +54,5 @@
 </div>
 
 {#each lists as list}
-  <List {list} on:list-deleted={refreshLists} />
+  <List {list} on:listChanged={refreshLists} />
 {/each}

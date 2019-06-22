@@ -51,7 +51,6 @@
 <nav>
 	<ul>
 		<li><a class='{segment === undefined ? "selected" : ""}' href='.'>home</a></li>
-		<li><a class='{segment === "about" ? "selected" : ""}' href='about'>about</a></li>
 		<li><a rel=prefetch class='{segment === "lists" ? "selected" : ""}' href='lists'>lists</a></li>
 		<li><a rel=prefetch class='{segment === "blog" ? "selected" : ""}' href='blog'>blog</a></li>
 	</ul>
