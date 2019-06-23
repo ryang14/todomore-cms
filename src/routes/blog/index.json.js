@@ -13,6 +13,7 @@ export function get(req, res) {
 
 export function post(req, res) {
   if (req.body._id) {
+    if(req.body.html == undefined) req.body.html = "";
     db.update({_id: req.body._id }, req.body);
   }
 
@@ -21,6 +22,7 @@ export function post(req, res) {
 
 export function put(req, res) {
   if (req.body.title) {
+    if(req.body.html == undefined) req.body.html = "";
     db.insert(req.body);
   }
 

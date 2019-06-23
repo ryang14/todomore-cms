@@ -30,7 +30,7 @@
   }
 
   function submit(event) {
-    post.html = event.target['content'].value;
+    post.html = event.target["content"].value;
     fetch("blog.json", {
       method: "POST",
       body: JSON.stringify(post),
@@ -59,14 +59,16 @@
   <form on:submit={submit}>
     <input bind:value={post.title} />
     <input class="content" id="content" type="hidden" bind:value={post.html} />
-    <trix-editor input="content"></trix-editor>
+    <trix-editor input="content" />
     <button type="submit">Save</button>
   </form>
 {:else}
   <h1>{post.title}</h1>
 
   <div class="content">
-    {@html post.html}
+    {#if post.html}
+      {@html post.html}
+    {/if}
   </div>
 
   <button on:click={() => (editable = !editable)}>Edit post</button>

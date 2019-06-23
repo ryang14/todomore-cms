@@ -14,10 +14,30 @@ describe("Test posts", () => {
     cy.contains("New post name");
   });
 
-  it("Open post", function() {
+  it("Make sure post is empty", function() {
     cy.contains("New post name").click();
     cy.url().should("contain", "http://localhost:3000/blog/");
     cy.contains("h1", "New post name");
+    cy.get('div[class="content"]').should("be.empty");
+  });
+
+  it("Edit post", function() {
+    cy.contains("New post name").click();
+    cy.url().should("contain", "http://localhost:3000/blog/");
+    cy.contains("h1", "New post name");
+    cy.wait(500);
+    cy.contains("button", "Edit post").click();
+    cy.get("trix-editor")
+      .click()
+      .type("New post content");
+    cy.contains("button", "Save").click();
+  });
+
+  it("Make sure post has content", function() {
+    cy.contains("New post name").click();
+    cy.url().should("contain", "http://localhost:3000/blog/");
+    cy.contains("h1", "New post name");
+    cy.get('div[class="content"]').contains("New post content");
   });
 
   it("Delete a post", function() {
