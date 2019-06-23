@@ -7,7 +7,6 @@ let db = new Datastore({
 });
 
 export function get(req, res) {
-  console.log(req.query.listId)
   db.find(req.query.listId != undefined ? {listId: req.query.listId} : {}, (err, docs) => {
     if (!err) {
       res.writeHead(200, {
