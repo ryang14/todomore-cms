@@ -29,7 +29,8 @@
     }).then(goto("/blog"));
   }
 
-  function submit() {
+  function submit(event) {
+    post.html = event.target['content'].value;
     fetch("blog.json", {
       method: "POST",
       body: JSON.stringify(post),
@@ -41,38 +42,12 @@
 </script>
 
 <style>
-  textarea.content {
-    overflow: hidden;
-    display: block;
+  form {
+    display: inline;
+  }
+
+  input {
     margin: 10px 0px;
-    height: 500px;
-    width: 100%;
-  }
-
-  .content :global(h2) {
-    font-size: 1.4em;
-    font-weight: 500;
-  }
-
-  .content :global(pre) {
-    background-color: #f9f9f9;
-    box-shadow: inset 1px 1px 5px rgba(0, 0, 0, 0.05);
-    padding: 0.5em;
-    border-radius: 2px;
-    overflow-x: auto;
-  }
-
-  .content :global(pre) :global(code) {
-    background-color: transparent;
-    padding: 0;
-  }
-
-  .content :global(ul) {
-    line-height: 1.5;
-  }
-
-  .content :global(li) {
-    margin: 0 0 0.5em 0;
   }
 </style>
 
@@ -83,7 +58,9 @@
 {#if editable}
   <form on:submit={submit}>
     <input bind:value={post.title} />
-    <textarea class="content" bind:value={post.html} />
+    <input class="content" id="content" type="hidden" bind:value={post.html} />
+    <trix-editor input="content"></trix-editor>
+    <button type="submit">Save</button>
   </form>
 {:else}
   <h1>{post.title}</h1>
@@ -91,7 +68,8 @@
   <div class="content">
     {@html post.html}
   </div>
+
+  <button on:click={() => (editable = !editable)}>Edit post</button>
 {/if}
 
-<button on:click={() => (editable = !editable)}>Edit post</button>
 <button on:click={deletePost}>Delete post</button>
